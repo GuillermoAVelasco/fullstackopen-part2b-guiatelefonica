@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Persons from './components/Persons'
+import FormPerson from './components/FormPerson'
+import FilterPersons from './components/FilterPersons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -38,30 +41,26 @@ const App = () => {
     setNewNumber('')
   } //2.6 paso 1
 
+  const handleNewName=(e)=>{
+    setNewNameTel(e)
+  }
+  const handleNewNumber=(e)=>{
+    setNewNumberTel(e)
+  }
+
   const personsFind = filterName===''
   ? persons
   : persons.filter(person => person.name.toUpperCase().indexOf(filterName.toUpperCase()) !== -1)
-console.log(personsFind)
+//console.log(personsFind)
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter show with: <input value={filterName} onChange={setFindFilterName} /></div>
+      <FilterPersons persons={personsFind} filterName={filterName} setFindFilterName={setFindFilterName} />
+      
       <h2>Add a New</h2>
-      <form onSubmit={addPerson}>
-        <div>name: <input value={newName} onChange={setNewNameTel} /></div>
-        <div>number: <input value={newNumber} onChange={setNewNumberTel} /></div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <FormPerson persons={personsFind }  addPerson={addPerson} newName={newName} newNumber={newNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber}/>
       <h2>Numbers</h2>
-      <ul>
-        {
-          personsFind.map((reg) => 
-            <li key={reg.name}>{reg.name} {reg.number}</li>          
-          )
-        }
-      </ul>
+      <Persons persons={personsFind} />
     </div>
   )
 }
